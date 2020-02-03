@@ -25,7 +25,6 @@ routes.put('/projects/:id',ProjectController.update);
 routes.delete('/projects/:id',ProjectController.destroy);
 
 routes.get('/populate',PopulateController.index);
-//routes.post('/populate/upload', PopulateController.uploadProject);
 
 routes.post('/populate/upload',upload.single('file'), (req, res) => res.json({
     message: 'Upload realizado com sucesso'
