@@ -3,7 +3,15 @@ const Project = require('../models/Project');
 const create = async (req,res) => {
     let project;
 
-    project = await Project.create(req.body);
+    try {
+        project = await Project.create(req.body);
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Erro ao criar Projeto'
+        })
+    }
+
+    
 
     return res.json(project);
 }

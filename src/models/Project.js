@@ -27,7 +27,9 @@ const ProjectSchema = new mongoose.Schema({
     expected_profitability: Number,
     expected_margin: Number,
     real_profitability: Number,
-    real_margin: Number
+	real_margin: Number,
+	totalReal: Number,
+	realQtd: Number
 });
 
 module.exports = mongoose.model('Project',ProjectSchema);
