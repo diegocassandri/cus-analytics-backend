@@ -1,76 +1,114 @@
-const fs = require('fs');
-var domain = require('domain').create();
-const XLSX = require('xlsx');
+const Project = require('../models/Project');
 
-let projects = [];
+const create = async (req,res) => {
+    let project;
 
-const index = async (req,res) => {
-    
-    //Lê arquivos do diretório 
-    fs.readdir(`.././projetos`,function(error,files){
-        projects = [];
-        //Percorre cada um dos arquivos
-        files.forEach((file) =>  {
-             
-            const workbook = XLSX.readFile(`.././projetos/${file}`);
-            var sheet_name_list = workbook.SheetNames;
-            var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]], {raw : false});
+    project = await Project.create(req.body);
 
-            //Monta objeto de projetos
-            const project = {
-                code: xlData[1].__EMPTY_2,
-                name: xlData[0].__EMPTY_2
-            };
+    return res.json(project);
+}
 
-            //Adiciona na lista
-            projects.push(project);
+const findAll = async (req,res) => {
+    if(req.query.code) {
+        let project;
+        let code = req.query.code;
+        try {
+            project = await Project.find({ code });
+            return res.json(project);
+        } catch (error) {
+            return res.status(404).send({
+                message: error.message || "Projeto Não encontrado"
+            });
+        }
+        
+    } else {
+        Project.find()
+        .then(projects => {
+            return res.send(projects);
+        })
+        .catch(error => {
+            return res.status(500).send({
+                message: error.message || "Erro ao buscar Projetos."
+            });
         });
-        return res.json(projects);
-    });
+    }
+
     
-    domain.on("error",function(error){
-        console.log('Erro ao ler Arquivos', error);
-    });
 }
 
-const indexOne = async (req,res) => {
-    const projectId = req.params.id;
 
-    return res.json(await populeProjects());
-}
-
-const populeProjects = async () => {
-    //Lê arquivos do diretório 
-    fs.readdir(`.././projetos`,function(error,files){
-        var data = [];
-        //Percorre cada um dos arquivos
-        files.forEach((file) =>  {
-             
-            const workbook = XLSX.readFile(`.././projetos/${file}`);
-            var sheet_name_list = workbook.SheetNames;
-            var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]], {raw : false});
-
-            //Monta objeto de projetos
-            const project = {
-                code: xlData[1].__EMPTY_2,
-                name: xlData[0].__EMPTY_2
-            };
-
-            //Adiciona na lista
-            data.push(project);
+const findById = async (req,res) => {
+    Project.findById(req.params.id)
+    .then(project => {
+        if(!project) {
+            return res.status(404).send({
+                message: "Projeto não encontrado Id: " + req.params.id
+            });            
+        }
+        res.send(project);''
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Projeto não encontrado Id: " + req.params.id
+            });                
+        }
+        return res.status(500).send({
+            message: "Erro ao buscar projeto Id: " + req.params.id
         });
-        console.log(data);
-        return data;
-    });
-    
-    domain.on("error",function(error){
-        console.log('Erro ao ler Arquivos', error);
     });
 }
+
+
+
+const update = async (req, res) => {
+    Project.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then(project => {
+        if(!project) {
+            return res.status(404).send({
+                message: "Projeto não encontrado Id: " + req.params.id
+            });
+        }
+        res.send(project);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Projeto não encontrado Id: " + req.params.id
+            });                
+        }
+        return res.status(500).send({
+            message: "Erro ao atualizar projeto Id: " + req.params.id
+        });
+    });
+};
+
+const destroy = async (req, res) => {
+    Project.findByIdAndRemove(req.params.id)
+    .then(project => {
+        if(!project) {
+            return res.status(404).send({
+                message: "Projeto não encontrado Id: " + req.params.id
+            });
+        }
+        res.send({message: "Projeto Excluido com sucesso!"});
+    }).catch(err => {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "Projeto não encontrado Id: " + req.params.id
+            });                
+        }
+        return res.status(500).send({
+            message: "Não foi possível deletar o projeto Id: " + req.params.id
+        });
+    });
+};
+
 
 module.exports = {
-    index,
-    indexOne
+    create,
+    findAll,
+    findById,
+    update,
+    destroy
 }
 
 
