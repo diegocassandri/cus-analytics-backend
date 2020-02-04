@@ -29,7 +29,18 @@ const ProjectSchema = new mongoose.Schema({
     real_profitability: Number,
 	real_margin: Number,
 	totalReal: Number,
-	realQtd: Number
+	realQtd: Number,
+	team: {
+		type: String,
+		enum: ['Matriz - HCM', 'Matriz - ERP','Pr-i','Sp-i','MG','RS','Não Informado'],
+		default: 'Não Informado'
+	},
+	status: {
+		type: String,
+		enum: ['Não Iniciado','Em Andamento','Concluído','Cancelado']
+	},
+	initialDate: Date,
+	endDate: Date
 });
 
 module.exports = mongoose.model('Project',ProjectSchema);
