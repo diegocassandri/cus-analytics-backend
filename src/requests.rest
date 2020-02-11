@@ -1,0 +1,7 @@
+GET http://localhost:3333/projects
+###
+
+GET http://localhost:3333/populate
+###
+
+GET http://localhost:3333/projects?name=mer&code=5070&team=HCM

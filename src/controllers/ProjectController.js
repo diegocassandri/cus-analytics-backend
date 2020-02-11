@@ -10,18 +10,35 @@ const create = async (req,res) => {
             message: 'Erro ao criar Projeto'
         })
     }
-
-    
-
     return res.json(project);
 }
 
 const findAll = async (req,res) => {
-    if(req.query.code) {
+    let filter = req.query;
+
+    if(filter.name){
+        filter.name = {
+             $regex: '.*' + filter.name + '.*',$options: 'i'
+        }
+    }
+
+    if(filter.team){
+        filter.team = {
+             $regex: '.*' + filter.team + '.*',$options: 'i'
+        }
+    }
+
+    if(filter.status){
+        filter.status = {
+             $regex: '.*' + filter.team + '.*',$options: 'i'
+        }
+    }
+
+    /*if(req.query) {
         let project;
-        let code = req.query.code;
+
         try {
-            project = await Project.find({ code });
+            project = await Project.find(filter);
             return res.json(project);
         } catch (error) {
             return res.status(404).send({
@@ -29,8 +46,8 @@ const findAll = async (req,res) => {
             });
         }
         
-    } else {
-        Project.find()
+    } else {*/
+        Project.find(filter)
         .then(projects => {
             return res.send(projects);
         })
@@ -39,7 +56,7 @@ const findAll = async (req,res) => {
                 message: error.message || "Erro ao buscar Projetos."
             });
         });
-    }
+  
 
     
 }

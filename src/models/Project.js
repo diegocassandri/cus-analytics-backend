@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
 
 const ProjectSchema = new mongoose.Schema({
-	code: Number,
-    name: String,
+	code: {
+		type: Number,
+		required: true
+	},
+    name: {
+		type: String,
+		required: true
+	},
     receitaNF: Number,
     totalQtd: Number,
     totalGeneral: Number,
@@ -41,7 +47,10 @@ const ProjectSchema = new mongoose.Schema({
 		default: 'Não Iniciado'
 	},
 	initialDate: Date,
-	endDate: Date
+	endDate: Date,
+	fcaFactor: String,
+	fcaCause: String,
+	fcaAction: String
 });
 
 module.exports = mongoose.model('Project',ProjectSchema);
