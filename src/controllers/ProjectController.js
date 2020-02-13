@@ -34,19 +34,6 @@ const findAll = async (req,res) => {
         }
     }
 
-    /*if(req.query) {
-        let project;
-
-        try {
-            project = await Project.find(filter);
-            return res.json(project);
-        } catch (error) {
-            return res.status(404).send({
-                message: error.message || "Projeto Não encontrado"
-            });
-        }
-        
-    } else {*/
         Project.find(filter)
         .then(projects => {
             return res.send(projects);
@@ -56,9 +43,7 @@ const findAll = async (req,res) => {
                 message: error.message || "Erro ao buscar Projetos."
             });
         });
-  
-
-    
+      
 }
 
 

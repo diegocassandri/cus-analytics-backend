@@ -18,12 +18,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+//Projetos
 routes.get('/projects',ProjectController.findAll);
 routes.post('/projects',ProjectController.create);
 routes.get('/projects/:id',ProjectController.findById);
 routes.put('/projects/:id',ProjectController.update);
 routes.delete('/projects/:id',ProjectController.destroy);
 
+//Populate
 routes.get('/populate',PopulateController.index);
 
 routes.post('/populate/upload',upload.single('file'), (req, res) => res.json({
