@@ -8,8 +8,21 @@ GET http://localhost:3333/projects?name=mer&code=5070
 
 ###
 
-DELETE http://localhost:3333/projects/5e46f8dec2f4a3276834282a
+DELETE http://localhost:3333/projects/5e46fab7cf899627948464a3
 
 ###
 
-DELETE http://localhost:3333/projects/5e46f9ad2f7a5646181ded26
+DELETE http://localhost:3333/projects/5e46fa4d0fbc983474540059
+
+###
+
+POST  http://localhost:3333/users
+
+content-type: application/json
+
+
+{
+    "name" : "Diego Cassandri",
+    "email" : "diego.cassandri@senior.com.br",
+    "password" : "Knoppix886@"
+}
