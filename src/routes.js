@@ -38,13 +38,12 @@ routes.post('/populate/upload',upload.single('file'), (req, res) => res.json({
 })); 
 
 //Usuário
-routes.post('/users',auth,UserController.create);
+routes.post('/users',UserController.create);
 routes.get('/users/me',auth,UserController.me);
 routes.put('/users/me',auth,UserController.update);
 
 //Autenticação
 routes.post('/login',UserController.login);
-routes.post('/loginad',UserController.loginAD);
 routes.post('/logout',auth,UserController.logout);
 routes.post('/logoutall',auth,UserController.logoutall);
 module.exports = routes;  

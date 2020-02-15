@@ -21,61 +21,53 @@ const create = async (req,res) => {
 }
 
 
-const loginAD = async (req,res) => {
-    try {
-
-        const { email, password } = req.body;
-
-        const user = await User.findByEmail(email);
-
-        if (!user) {
-            return res.status(401).send({error: 'Login failed! Check authentication credentials'});
-        }
-
-        ad.authenticate(email, password, async function(err, auth) {
-            if (err) {
-             return res.status(400).send({message: '----- Invalid Credentials!'});
-            }
-            
-            if (auth) {
-              console.log('Authenticated!');
-            
-              const token = await user.generateAuthToken();
-
-              return res.send({ user, token });
-
-            }
-            else {
-            return res.status(400).send({message: 'Invalid Credentials!'});
-            }
-        });
-        
-
-    } catch (error) {
-        return res.status(400).send({message: 'Invalid Credentials!'});
-    }
-}
-
-
-
 const login = async (req,res) => {
-    //Login a registered user
-    try {
+    const { email, password } = req.body;
 
-        const { email, password } = req.body;
+    const user = await User.findByEmail(email);
 
-        const user = await User.findByCredentials(email, password);
+    if (!user) {
+        return res.status(401).send({message: 'Login failed! Check authentication credentials'});
+    }
 
-        if (!user) {
-            return res.status(401).send({error: 'Login failed! Check authentication credentials'});
+    if(user.type === 'Legacy') {
+        try {
+
+            const user = await User.findByCredentials(email, password);
+    
+            if (!user) {
+                return res.status(401).send({error: 'Login failed! Check authentication credentials'});
+            }
+    
+            const token = await user.generateAuthToken();
+    
+            res.send({ user, token });
+            
+        } catch (error) {
+            res.status(400).send({message: 'Invalid Credentials!'});
         }
-
-        const token = await user.generateAuthToken();
-
-        res.send({ user, token });
-        
-    } catch (error) {
-        res.status(400).send({message: 'Invalid Credentials!'});
+    } else {
+        try {
+            ad.authenticate(email, password, async function(err, auth) {
+                if (err) {
+                 return res.status(400).send({message: 'Invalid Credentials!'});
+                }
+                
+                if (auth) {
+                  console.log('Authenticated!');
+                
+                  const token = await user.generateAuthToken();
+    
+                  return res.send({ user, token });
+    
+                }
+                else {
+                return res.status(400).send({message: 'Invalid Credentials!'});
+                }
+            });
+        } catch (error) {
+            return res.status(400).send({message: 'Invalid Credentials!'});
+        }
     }
 }
 
@@ -135,6 +127,5 @@ module.exports = {
     me,
     update,
     logout,
-    logoutall,
-    loginAD
+    logoutall
 };
