@@ -1,0 +1,13 @@
+version: '2'
+services:
+    cus-analytics-backend:
+        build:
+            context: .
+            dockerfile: dockerfile
+        environment:
+            NODE_ENV: development
+        ports:
+            - 3333:3333
+        volumes:
+            - .:/home/app/cus-analytics-backend
+            - /home/app/cus-analytics-backend/node_modules
