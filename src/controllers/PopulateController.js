@@ -7,6 +7,7 @@ const Project = require('../models/Project');
 require('dotenv/config');
 
 let projects = [];
+let savedProjects = [];
 const dirFiles = process.env.DIR_FILES;
 
 const index = async (req,res) => {
@@ -73,8 +74,8 @@ const index = async (req,res) => {
 
         //Salva projetos no banco de dados
         savedProjects = await saveProjects(projects);
-
-        return res.json(projects);
+        
+        return res.json(savedProjects);
     });
     
     domain.on('error',function(error){
@@ -84,8 +85,9 @@ const index = async (req,res) => {
 
 
 const saveProjects = async (projects) => {
-    let savedProjects = [];
-    await projects.forEach(async (project) => {
+    savedProjects = [];
+
+    for (const [idx, project] of projects.entries()) {
         let { code } = project;
         let projectDB = [];
 
@@ -100,8 +102,8 @@ const saveProjects = async (projects) => {
                 console.log(error);
             }
         } 
-
-    });
+    }
+    
     return savedProjects;
 }
 

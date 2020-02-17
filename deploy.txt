@@ -1,0 +1,19 @@
+aws configure
+
+docker-machine create --driver amazonec2 cus01
+
+docker-machine env cus01
+
+
+###DEV
+docker-compose up -d
+
+
+configurar security groups ports
+
+###PROD
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+
+### voltar do dockermachine para a maquina atual
+eval $(docker-machine env -u)

@@ -1,0 +1,21 @@
+version: '3'
+services:
+    cus-analytics-backend:
+        labels: 
+            - "traefik.enable=true"
+            - "traefik.frontend.rule=Host:customizacao.diegocassandri.com"
+        build: .
+        ports:
+            - 3333:3333
+        command: npm start    
+
+    reverse-proxy: 
+        image: traefik
+        command: --api --docker.exposedbydefault=false
+        ports:
+            - "80:80"
+            - "8080:8080"
+        volumes: 
+            - /var/run/docker.sock:/var/run/docker.sock
+
+
