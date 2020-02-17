@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://oministack:oministack@oministack-kokfb.mongodb.net/cus-analytics?retryWrites=true&w=majority',{
+const mongoUrl = process.env.MONGO_URL;
+
+mongoose.connect(mongoUrl,{
     useNewUrlParser: true,
     useUnifiedTopology: true ,
     useCreateIndex: true,
