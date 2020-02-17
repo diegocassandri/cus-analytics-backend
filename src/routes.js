@@ -6,6 +6,10 @@ const UserController = require('./controllers/UserController');
 const auth = require('./middleware/auth');
 
 const multer = require('multer');
+const path = require('path')
+
+/*const dirFiles = `${__dirname}/projetos`;*/
+
 const dirFiles = process.env.DIR_FILES;
 
 const routes = Router();
@@ -46,4 +50,5 @@ routes.put('/users/me',auth,UserController.update);
 routes.post('/login',UserController.login);
 routes.post('/logout',auth,UserController.logout);
 routes.post('/logoutall',auth,UserController.logoutall);
+
 module.exports = routes;  

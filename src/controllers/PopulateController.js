@@ -8,6 +8,8 @@ require('dotenv/config');
 
 let projects = [];
 let savedProjects = [];
+
+
 const dirFiles = process.env.DIR_FILES;
 
 const index = async (req,res) => {
@@ -17,7 +19,7 @@ const index = async (req,res) => {
         itens = [];
         //Percorre cada um dos arquivos
         files.forEach( (file) =>  {
-            if((path.extname(file) === '.xls') || (path.extname(file) === '.xlsx')) {
+            if((path.extname(file) === '.xls')) {
                 const workbook = XLSX.readFile(`${dirFiles}/${file}`);
                 var sheet_name_list = workbook.SheetNames;
                 var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]], {raw : true});
