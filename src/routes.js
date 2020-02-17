@@ -10,7 +10,7 @@ const dirFiles = process.env.DIR_FILES;
 
 const routes = Router();
 
-//Configueação storage multer
+//Configuração storage multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, dirFiles)
@@ -38,7 +38,7 @@ routes.post('/populate/upload',upload.single('file'), (req, res) => res.json({
 })); 
 
 //Usuário
-routes.post('/users',UserController.create);
+routes.post('/users',auth,UserController.create);
 routes.get('/users/me',auth,UserController.me);
 routes.put('/users/me',auth,UserController.update);
 
