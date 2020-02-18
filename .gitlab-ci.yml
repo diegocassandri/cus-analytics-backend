@@ -1,22 +1,19 @@
 image: node:10.15.3
 
 stages:
-    - build
+    - package
 
 cache:
     paths:
       - node_modules/
 
-build:
-    stage: build
-    script:
-        - npm install
-    artifacts:
-        paths:
-            - node_modules/
-
 docker:update:
-variables:
-        DOCKER_HOST: tcp://10.0.12.7:2375
-        DOCKER_DRIVER: overlay2
-              
+    stage: package
+    script:
+        - rm -rf ./package-lock.json
+        - npm install
+        - IMAGE_TAG_NAME=$(echo $IMAGE_TAG | sed -r 's/(:\w*)\//\1_/')
+        - docker login -u ssm -p $DOCKER_SSM_TOKEN docker.senior.com.br
+        - docker image build -f dockerfile -t docker.senior.com.br/$IMAGE_TAG_NAME ./dist
+        - docker push docker.senior.com.br/$IMAGE_TAG_NAME
+      
