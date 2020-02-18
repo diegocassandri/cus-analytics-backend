@@ -1,0 +1,22 @@
+image: node:10.15.3
+
+stages:
+    - build
+
+cache:
+    paths:
+      - node_modules/
+
+build:
+    stage: build
+    script:
+        - npm install
+    artifacts:
+        paths:
+            - node_modules/
+
+docker:update:
+    variables:
+        DOCKER_HOST: tcp://10.0.12.7:2375
+        DOCKER_DRIVER: overlay2
+              
