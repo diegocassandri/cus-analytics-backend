@@ -16,7 +16,7 @@ build:
             - node_modules/
 
 docker:update:
-    variables:
+variables:
         DOCKER_HOST: tcp://10.0.12.7:2375
         DOCKER_DRIVER: overlay2
               
