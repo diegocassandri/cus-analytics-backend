@@ -50,7 +50,7 @@ const login = async (req,res) => {
         try {
             ad.authenticate(email, password, async function(err, auth) {
                 if (err) {
-                 return res.status(400).send({message: 'Invalid Credentials!'});
+                 return res.status(400).send({message: 'Invalid LDAP Credentials!'});
                 }
                 
                 if (auth) {

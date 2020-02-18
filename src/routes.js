@@ -6,9 +6,7 @@ const UserController = require('./controllers/UserController');
 const auth = require('./middleware/auth');
 
 const multer = require('multer');
-const path = require('path')
 
-/*const dirFiles = `${__dirname}/projetos`;*/
 
 const dirFiles = process.env.DIR_FILES;
 
