@@ -17,6 +17,7 @@ const create = async (req,res) => {
 const findAll = async (req,res) => {
     let filter = req.query;
 
+
     if(filter.name){
         filter.name = {
              $regex: '.*' + filter.name + '.*',$options: 'i'
@@ -32,6 +33,18 @@ const findAll = async (req,res) => {
     if(filter.status){
         filter.status = {
              $regex: '.*' + filter.status + '.*',$options: 'i'
+        }
+    }
+
+    if(filter.initialDate) {
+        filter.initialDate = {
+            $gte: new Date(filter.initialDate)
+        }
+    }
+
+    if(filter.endDate) {
+        filter.endDate = {
+            $lte: new Date(new Date(filter.endDate).setHours(23, 59, 59))
         }
     }
 
