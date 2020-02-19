@@ -31,7 +31,7 @@ const findAll = async (req,res) => {
 
     if(filter.status){
         filter.status = {
-             $regex: '.*' + filter.team + '.*',$options: 'i'
+             $regex: '.*' + filter.status + '.*',$options: 'i'
         }
     }
 
