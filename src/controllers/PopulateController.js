@@ -41,7 +41,7 @@ const index = async (req,res) => {
                     } else {
                         itens.push({
                             area: xlData[i].__EMPTY_1,
-                            resource:  xlData[i].__EMPTY_2,
+                            resource:  xlData[i].__EMPTY_2 || "",
                             quantity: xlData[i].__EMPTY_3,
                             value: xlData[i].__EMPTY_4,
                             total: xlData[i].__EMPTY_5,

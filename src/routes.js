@@ -2,6 +2,7 @@ const { Router } = require('express');
 const ProjectController = require('./controllers/ProjectController');
 const PopulateController = require('./controllers/PopulateController');
 const UserController = require('./controllers/UserController');
+const AreaController = require('./controllers/AreaController');
 
 const auth = require('./middleware/auth');
 
@@ -38,6 +39,14 @@ routes.get('/populate',auth,PopulateController.index);
 routes.post('/populate/upload',upload.single('file'), (req, res) => res.json({
     message: 'Upload realizado com sucesso'
 })); 
+
+//Area
+routes.get('/areas',AreaController.findAll);
+routes.get('/areas/:id',AreaController.findById);
+routes.post('/areas',AreaController.create);
+routes.put('/areas/:id',AreaController.update);
+routes.delete('/areas/:id',AreaController.destroy);
+//Resource
 
 //Usuário
 routes.post('/users',auth,UserController.create);

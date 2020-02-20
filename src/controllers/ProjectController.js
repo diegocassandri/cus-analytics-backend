@@ -69,7 +69,7 @@ const findById = async (req,res) => {
                 message: "Projeto não encontrado Id: " + req.params.id
             });            
         }
-        res.send(project);''
+        res.send(project);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
