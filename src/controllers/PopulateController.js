@@ -113,9 +113,7 @@ const saveProjects = async (projects) => {
                 }
  
                 const projectSaved = await Project.create(project);
-
-                /*await projectSaved.populate('itens.area').populate('itens.resource').execPopulate();*/
-
+                
                 savedProjects.push(projectSaved);
             } catch (error) {
                 console.log(error);
