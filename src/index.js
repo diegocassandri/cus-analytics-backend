@@ -1,5 +1,5 @@
 const express = require('express');
-const routes = require('./routes.js');
+const routes = require('./router/routes.js');
 var cors = require('cors');
 
 require('./db/mongoose');
