@@ -55,7 +55,7 @@ routes.put('/resources/:id',auth,ResourceController.update);
 routes.delete('/resources/:id',auth,ResourceController.destroy);
 
 //Usuário
-routes.post('/users',auth,UserController.create);
+routes.post('/users',UserController.create);
 routes.get('/users/me',auth,UserController.me);
 routes.put('/users/me',auth,UserController.update);
 

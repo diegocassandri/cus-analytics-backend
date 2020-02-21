@@ -3,6 +3,8 @@ var path = require('path');
 const domain = require('domain').create();
 const XLSX = require('xlsx');
 const Project = require('../models/Project');
+const Area = require('../models/Area');
+const Resource = require('../models/Resourse');
 
 require('dotenv/config');
 
@@ -89,16 +91,31 @@ const index = async (req,res) => {
 const saveProjects = async (projects) => {
     savedProjects = [];
 
-    for (const [idx, project] of projects.entries()) {
+    for (const [i, project] of projects.entries()) {
         let { code } = project;
         let projectDB = [];
 
         //Verifica se o o projeto ja existe no DB
         projectDB = await Project.find({ code });
 
+
+        //Caso não encontre o projeto o meso deve ser criado
         if(Object.keys(projectDB).length === 0) {
             try {
+               
+                for (const [i, item] of project.itens.entries()){
+                    
+                    const areaDb = await Area.find({ name: item.area});
+                    const resourceDb = await Resource.find({ name: item.resource});
+
+                    item.area = areaDb[0]._id;
+                    item.resource = resourceDb[0]._id;
+                }
+ 
                 const projectSaved = await Project.create(project);
+
+                /*await projectSaved.populate('itens.area').populate('itens.resource').execPopulate();*/
+
                 savedProjects.push(projectSaved);
             } catch (error) {
                 console.log(error);

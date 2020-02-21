@@ -14,8 +14,14 @@ const ProjectSchema = new mongoose.Schema({
     totalGeneral: Number,
     totalNF: Number,
     itens: [{
-		area: String,
-		resource: String,
+		area : { 
+			type: mongoose.Schema.Types.ObjectId,
+			ref : 'Area'
+		},	
+		resource: { 
+			type: mongoose.Schema.Types.ObjectId,
+			ref : 'Resource'
+		},
 		quantity: Number,
 		value: Number,
 		total: Number,

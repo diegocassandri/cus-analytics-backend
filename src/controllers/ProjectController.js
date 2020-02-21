@@ -6,12 +6,15 @@ const create = async (req,res) => {
 
     try {
         project = await Project.create(req.body);
+
+        await project.populate('itens.area').populate('itens.resource').execPopulate();
+
+        return res.json(project);
     } catch (error) {
         return res.status(500).json({
             message: 'Erro ao criar Projeto'
         })
     }
-    return res.json(project);
 }
 
 const findAll = async (req,res) => {
@@ -48,21 +51,22 @@ const findAll = async (req,res) => {
         }
     }
 
-        Project.find(filter)
-        .then(projects => {
-            return res.send(projects);
-        })
-        .catch(error => {
-            return res.status(500).send({
-                message: error.message || "Erro ao buscar Projetos."
-            });
+
+    try {
+        const projects = await Project.find(filter).populate('itens.area').populate('itens.resource').exec();
+        return res.json(projects);
+
+    } catch (error) {
+        return res.status(500).send({
+            message: error.message
         });
+    }
       
 }
 
 
 const findById = async (req,res) => {
-    Project.findById(req.params.id)
+    Project.findById(req.params.id).populate('itens.area').populate('itens.resource').exec()
     .then(project => {
         if(!project) {
             return res.status(404).send({
@@ -85,7 +89,7 @@ const findById = async (req,res) => {
 
 
 const update = async (req, res) => {
-    Project.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    Project.findByIdAndUpdate(req.params.id, req.body, {new: true}).populate('itens.area').populate('itens.resource').exec()
     .then(project => {
         if(!project) {
             return res.status(404).send({
