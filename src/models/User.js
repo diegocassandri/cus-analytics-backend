@@ -1,7 +1,10 @@
+"use strict";
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+
+
 
 const userSchema = mongoose.Schema({
     name: {
@@ -88,3 +91,28 @@ userSchema.statics.findByEmail = async (email) => {
 const User = mongoose.model('User', userSchema)
 
 module.exports = User;
+
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      User:
+ *        type: object
+ *        required:
+ *          - name
+ *          - email
+ *          - password
+ *        properties:
+ *          name:
+ *            type: string
+ *          email:
+ *            type: string
+ *            format: email
+ *            description: Email for the user, needs to be unique.
+ *          password:
+ *            type: string 
+ *        example:
+ *           name: alguem
+ *           email: fake@email.com
+ *           password: 123
+ */

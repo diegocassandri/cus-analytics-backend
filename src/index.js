@@ -1,15 +1,20 @@
+"use strict";
 const express = require('express');
-const routes = require('./router/routes.js');
+const routes = require('./router');
 var cors = require('cors');
 
+
+//DB
 require('./db/mongoose');
 
-const app = express();
 
+//EXPRESS
+const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(routes);
+app.use("/",routes);
 
+//ERROR HANDLING
 app.use((req, res, next) => {
     const erro = new Error('Não encontrado');
     erro.status = 404;

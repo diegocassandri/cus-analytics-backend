@@ -1,4 +1,6 @@
-const { Router } = require('express');
+"use strict";
+const express = require("express");
+const routes = express.Router();
 const ProjectController = require('../controllers/ProjectController');
 const PopulateController = require('../controllers/PopulateController');
 const UserController = require('../controllers/UserController');
@@ -8,11 +10,12 @@ const ResourceController = require('../controllers/ResourceController');
 const auth = require('../middleware/auth');
 
 const multer = require('multer');
-
-
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 const dirFiles = process.env.DIR_FILES;
+var path = require('path');
 
-const routes = Router();
+
 
 //Configuração storage multer
 const storage = multer.diskStorage({
@@ -25,6 +28,13 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
+/**
+ * @swagger
+ * tags:
+ *   name: Projects
+ *   description: Project management
+ */
 
 
 //Projetos
@@ -54,14 +64,72 @@ routes.post('/resources',auth,ResourceController.create);
 routes.put('/resources/:id',auth,ResourceController.update);
 routes.delete('/resources/:id',auth,ResourceController.destroy);
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: User management
+ */
+
+
 //Usuário
+/**
+ * @swagger
+ * path:
+ *  /users/:
+ *    post:
+ *      summary: Cria um novo usuário
+ *      tags: [Users]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/User'
+ *      responses:
+ *        "201":
+ *          description: A user schema
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/User'
+ */
 routes.post('/users',UserController.create);
+
 routes.get('/users/me',auth,UserController.me);
 routes.put('/users/me',auth,UserController.update);
 
 //Autenticação
+
 routes.post('/login',UserController.login);
 routes.post('/logout',auth,UserController.logout);
 routes.post('/logoutall',auth,UserController.logoutall);
+
+// Swagger set up
+const options = {
+    swaggerDefinition: {
+      openapi: "3.0.0",
+      info: {
+        title: "Documentação Cus-Analytics",
+        version: "1.0.0",
+        description:
+          "Documentação Cus-Analytics",
+        contact: {
+          name: "Diego Cassandri",
+          url: "senior.com.br",
+          email: "diego.cassandri@senior.com.br"
+        }
+      },
+      servers: [
+        {
+          url: "http://localhost:3333"
+        }
+      ]
+    },
+    apis: [ __filename,path.resolve(__dirname, '../') + '/models/*',]
+  };
+  const specs = swaggerJsdoc(options);
+  routes.use("/docs", swaggerUi.serve);
+  routes.get("/docs", swaggerUi.setup(specs, { explorer: true }));
 
 module.exports = routes;  
