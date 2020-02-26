@@ -108,8 +108,12 @@ const saveProjects = async (projects) => {
                     const areaDb = await Area.find({ name: item.area});
                     const resourceDb = await Resource.find({ name: item.resource});
 
-                    item.area = areaDb[0]._id;
-                    item.resource = resourceDb[0]._id;
+                    try {
+                        item.area = areaDb[0]._id;
+                        item.resource = resourceDb[0]._id;
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }
  
                 const projectSaved = await Project.create(project);

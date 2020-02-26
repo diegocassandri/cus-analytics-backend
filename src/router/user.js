@@ -26,6 +26,7 @@ const auth = require('../middleware/auth');
  *      parameters:
  *        - in: header
  *          name: Authorization
+ *          description: Token de autenticação
  *      responses:
  *        "201":
  *          description: A user schema
@@ -33,6 +34,8 @@ const auth = require('../middleware/auth');
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/User'
+ *        "401":
+ *          description: Não autorizado  
  */
 routes.post('/users',UserController.create);
 
@@ -43,12 +46,10 @@ routes.post('/users',UserController.create);
  *    post:
  *      summary: Retorna informações no usuário logado
  *      tags: [Users]
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/User'
+ *      parameters:
+ *        - in: header
+ *          name: Authorization
+ *          description: Token de autenticação
  *      responses:
  *        "200":
  *          description: user schema
@@ -56,15 +57,17 @@ routes.post('/users',UserController.create);
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/User'
- */
+ *        "401":
+ *          description: Não autorizado 
+ */         
 routes.get('/users/me',auth,UserController.me);
 
 /**
  * @swagger
- * put:
- *  /users/me:
+ * path:
+ *  /users/me/:
  *    post:
- *      summary: Atualiza informações do usuário logado
+ *      summary: Atualiza usuário logado
  *      tags: [Users]
  *      requestBody:
  *        required: true
@@ -72,13 +75,19 @@ routes.get('/users/me',auth,UserController.me);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/User'
+ *      parameters:
+ *        - in: header
+ *          name: Authorization
+ *          description: Token de autenticação
  *      responses:
- *        "200":
- *          description: user schema
+ *        "201":
+ *          description: A user schema
  *          content:
  *            application/json:
  *              schema:
  *                $ref: '#/components/schemas/User'
+ *        "401":
+ *          description: Não autorizado  
  */
 routes.put('/users/me',auth,UserController.update);
 
@@ -91,6 +100,34 @@ routes.put('/users/me',auth,UserController.update);
  *   description: Auth management
  */
 
+/**
+ * @swagger
+ * path:
+ *  /login/:
+ *    post:
+ *      summary: Realiza a autenticação do usuário
+ *      tags: [Authorization]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                email:
+ *                  type: string
+ *                password:
+ *                  type: string 
+ *      responses:
+ *        "201":
+ *          description: A user schema
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/User'
+ *        "401":
+ *          description: Não autorizado  
+ */
 routes.post('/login',UserController.login);
 routes.post('/logout',auth,UserController.logout);
 routes.post('/logoutall',auth,UserController.logoutall);
