@@ -8,3 +8,18 @@ const AreaSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Area',AreaSchema);
+
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      Area:
+ *        type: object
+ *        required:
+ *          - name
+ *        properties:
+ *          name:
+ *            type: string
+ *        example:
+ *           name: FAB - Analise de Sistemas
+ */

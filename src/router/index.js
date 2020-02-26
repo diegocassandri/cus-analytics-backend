@@ -1,13 +1,12 @@
-"use strict";
 const express = require("express");
 const routes = express.Router();
 const ProjectController = require('../controllers/ProjectController');
 const PopulateController = require('../controllers/PopulateController');
-const UserController = require('../controllers/UserController');
 const AreaController = require('../controllers/AreaController');
 const ResourceController = require('../controllers/ResourceController');
 
 const auth = require('../middleware/auth');
+const userRoutes = require('./user');
 
 const multer = require('multer');
 const swaggerJsdoc = require('swagger-jsdoc');
@@ -15,6 +14,9 @@ const swaggerUi = require('swagger-ui-express');
 const dirFiles = process.env.DIR_FILES;
 var path = require('path');
 
+
+//Rotas externas
+routes.use(userRoutes.routes);
 
 
 //Configuração storage multer
@@ -38,6 +40,14 @@ const upload = multer({ storage });
 
 
 //Projetos
+
+/**
+ * @swagger
+ * tags:
+ *   name: Projects
+ *   description: Project management
+ */
+
 routes.get('/projects',auth,ProjectController.findAll);
 routes.post('/projects',auth,ProjectController.create);
 routes.get('/projects/:id',auth,ProjectController.findById);
@@ -52,58 +62,35 @@ routes.post('/populate/upload',upload.single('file'), (req, res) => res.json({
 })); 
 
 //Area
+
+/**
+ * @swagger
+ * tags:
+ *   name: Areas
+ *   description: Area management
+ */
+
 routes.get('/areas',auth,AreaController.findAll);
 routes.get('/areas/:id',auth,AreaController.findById);
 routes.post('/areas',auth,AreaController.create);
 routes.put('/areas/:id',auth,AreaController.update);
 routes.delete('/areas/:id',auth,AreaController.destroy);
+
 //Resource
+
+/**
+ * @swagger
+ * tags:
+ *   name: Resources
+ *   description: Resource management
+ */
+
 routes.get('/resources',auth,ResourceController.findAll);
 routes.get('/resources/:id',auth,ResourceController.findById);
 routes.post('/resources',auth,ResourceController.create);
 routes.put('/resources/:id',auth,ResourceController.update);
 routes.delete('/resources/:id',auth,ResourceController.destroy);
 
-/**
- * @swagger
- * tags:
- *   name: Users
- *   description: User management
- */
-
-
-//Usuário
-/**
- * @swagger
- * path:
- *  /users/:
- *    post:
- *      summary: Cria um novo usuário
- *      tags: [Users]
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/User'
- *      responses:
- *        "201":
- *          description: A user schema
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/User'
- */
-routes.post('/users',UserController.create);
-
-routes.get('/users/me',auth,UserController.me);
-routes.put('/users/me',auth,UserController.update);
-
-//Autenticação
-
-routes.post('/login',UserController.login);
-routes.post('/logout',auth,UserController.logout);
-routes.post('/logoutall',auth,UserController.logoutall);
 
 // Swagger set up
 const options = {
@@ -126,7 +113,7 @@ const options = {
         }
       ]
     },
-    apis: [ __filename,path.resolve(__dirname, '../') + '/models/*',]
+    apis: [ __filename,path.resolve(__dirname, '../') + '/models/*',path.resolve(__dirname, '../') + '/router/*']
   };
   const specs = swaggerJsdoc(options);
   routes.use("/docs", swaggerUi.serve);
