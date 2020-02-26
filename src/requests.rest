@@ -19,10 +19,19 @@ DELETE http://localhost:3333/projects/5e46fa4d0fbc983474540059
 POST  http://localhost:3333/users
 
 content-type: application/json
-
-
 {
     "name" : "Diego Cassandri",
     "email" : "diego.cassandri@senior.com.br",
     "password" : "Knoppix886@"
+}
+
+###
+
+POST  http://localhost:3333/login
+
+content-type: application/json
+
+{
+    "email" : "diego.cassandri@gmail.com",
+    "password" : "Knoppix886*"
 }

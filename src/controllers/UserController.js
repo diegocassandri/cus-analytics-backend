@@ -5,7 +5,12 @@ var config = {
     url: process.env.LDAP_URL,
     baseDN: process.env.LDAP_BASE
 }
-var ad = new ActiveDirectory(config);
+
+
+var ad = new ActiveDirectory({
+    url: process.env.LDAP_URL,
+    baseDN: process.env.LDAP_BASE
+});
 
 
 const create = async (req,res) => {
@@ -66,7 +71,7 @@ const login = async (req,res) => {
                 }
             });
         } catch (error) {
-            return res.status(400).send({message: 'Invalid Credentials!'});
+            return res.status(400).send({message: 'Invalid Credentials!', error: error});
         }
     }
 }

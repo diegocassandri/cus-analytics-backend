@@ -13,7 +13,7 @@ const auth = require('../middleware/auth');
 /**
  * @swagger
  * path:
- *  /users/:
+ *  /users:
  *    post:
  *      summary: Cria um novo usuário
  *      tags: [Users]
@@ -65,8 +65,8 @@ routes.get('/users/me',auth,UserController.me);
 /**
  * @swagger
  * path:
- *  /users/me/:
- *    post:
+ *  /users/me:
+ *    put:
  *      summary: Atualiza usuário logado
  *      tags: [Users]
  *      requestBody:
@@ -80,7 +80,7 @@ routes.get('/users/me',auth,UserController.me);
  *          name: Authorization
  *          description: Token de autenticação
  *      responses:
- *        "201":
+ *        "200":
  *          description: A user schema
  *          content:
  *            application/json:
@@ -103,7 +103,7 @@ routes.put('/users/me',auth,UserController.update);
 /**
  * @swagger
  * path:
- *  /login/:
+ *  /login:
  *    post:
  *      summary: Realiza a autenticação do usuário
  *      tags: [Authorization]
@@ -119,7 +119,7 @@ routes.put('/users/me',auth,UserController.update);
  *                password:
  *                  type: string 
  *      responses:
- *        "201":
+ *        "200":
  *          description: A user schema
  *          content:
  *            application/json:
@@ -129,9 +129,43 @@ routes.put('/users/me',auth,UserController.update);
  *          description: Não autorizado  
  */
 routes.post('/login',UserController.login);
+
+/**
+ * @swagger
+ * path:
+ *  /logout:
+ *    post:
+ *      summary: Realiza o logout do usuário
+ *      tags: [Authorization]
+ *      parameters:
+ *        - in: header
+ *          name: Authorization
+ *          description: Token de autenticação
+ *      responses:
+ *        "200":
+ *          description: mensagem logoff
+ *        "401":
+ *          description: Não autorizado  
+ */
 routes.post('/logout',auth,UserController.logout);
+
+/**
+ * @swagger
+ * path:
+ *  /logoutall:
+ *    post:
+ *      summary: Realiza o logout do usuário de todas as seções
+ *      tags: [Authorization]
+ *      parameters:
+ *        - in: header
+ *          name: Authorization
+ *          description: Token de autenticação
+ *      responses:
+ *        "200":
+ *          description: mensagem logoff
+ *        "401":
+ *          description: Não autorizado  
+ */
 routes.post('/logoutall',auth,UserController.logoutall);
-
-
 
 module.exports = { routes }

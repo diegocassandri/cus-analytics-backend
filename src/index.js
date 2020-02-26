@@ -1,8 +1,7 @@
-"use strict";
 const express = require('express');
 const routes = require('./router');
 var cors = require('cors');
-
+require('dotenv/config');
 
 //DB
 require('./db/mongoose');
@@ -29,7 +28,6 @@ app.use((error, req, res, next) => {
         }
     });
 });
-
 
 app.listen(process.env.PORT || 3000);
 
