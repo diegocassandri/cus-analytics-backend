@@ -23,6 +23,9 @@ const auth = require('../middleware/auth');
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/User'
+ *      parameters:
+ *        - in: header
+ *          name: Authorization
  *      responses:
  *        "201":
  *          description: A user schema
