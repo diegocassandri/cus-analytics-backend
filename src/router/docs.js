@@ -1,7 +1,11 @@
 const routes = require("express").Router();
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-var path = require('path');
+const path = require('path');
+const os = require("os");
+const hostname = os.hostname();
+const port = process.env.PORT;
+
 
 // Swagger set up
 const options = {
@@ -20,7 +24,7 @@ const options = {
       },
       servers: [
         {
-          url: "http://localhost:3333"
+          url2: `http://${hostname}:${port}` 
         }
       ]
     },

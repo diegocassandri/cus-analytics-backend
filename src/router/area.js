@@ -27,7 +27,7 @@ const auth = require('../middleware/auth');
  *          name: Authorization
  *          description: Token de autenticação
  *      responses:
- *        "201":
+ *        "200":
  *          description: A area schema
  *          content:
  *            application/json:
@@ -61,7 +61,7 @@ routes.get('/areas',auth,AreaController.findAll);
  *          schema:
  *            type: integer
  *      responses:
- *        "201":
+ *        "200":
  *          description: A area schema
  *          content:
  *            application/json:
