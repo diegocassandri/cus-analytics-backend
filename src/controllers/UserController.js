@@ -1,11 +1,6 @@
 const User = require('../models/User');
 const ActiveDirectory = require('activedirectory');
-
-var config = {
-    url: process.env.LDAP_URL,
-    baseDN: process.env.LDAP_BASE
-}
-
+require('dotenv/config');
 
 var ad = new ActiveDirectory({
     url: process.env.LDAP_URL,
