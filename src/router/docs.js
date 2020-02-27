@@ -24,7 +24,7 @@ const options = {
       },
       servers: [
         {
-          url2: `http://${hostname}:${port}` 
+          url: `http://${hostname}:${port}` 
         }
       ]
     },
