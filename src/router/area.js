@@ -16,12 +16,6 @@ const auth = require('../middleware/auth');
  *    get:
  *      summary: Lista todas as áreas
  *      tags: [Areas]
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/Area'
  *      parameters:
  *        - in: header
  *          name: Authorization
@@ -45,12 +39,6 @@ routes.get('/areas',auth,AreaController.findAll);
  *    get:
  *      summary: Retorna uma área
  *      tags: [Areas]
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/Area'
  *      parameters:
  *        - in: header
  *          name: Authorization
